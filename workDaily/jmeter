@@ -1,0 +1,22 @@
+场景一： 使用jmeter测试1万用户同时登录
+  1.准备含有1w用户的csv文件。
+  2.在项目添加 CSV Data Set Config（Config Element）
+    需要指定文件目录
+    指定参数名（userId,cookie,token），文件一行含有三种数据，分别是...
+    文件中数据个间隔方式 ","
+  3.在接口中使用 通过${userId} 来使用
+  4.如果要获取一个接口中response body中的某个参数 
+    在该接口中添加模块，JSON Extractor 
+    先指定它在项目中使用的变量名称
+    {data:{orderList:[{orderNo:xxxx}]}} , 我要获取第一条订单的订单编号，所以我的 JSON Path Expressions : data.orderList[0].orderNo
+  5.把这些变量导出到一个csv文件中
+    添加一个 BeanShell PostProcessor
+    写入导出代码
+    FileWriter fstream = new FileWriter("/Users/liu.jianbin/Desktop/workspace/workproject/jmeter/userInfo.csv",true);
+    BufferedWriter out = new BufferedWriter(fstream);
+    out.write(vars.get("userId")+","+vars.get("JSESSIONID")+","+vars.get("token")+"\n");
+    out.close();
+    fstream.close();
+  
+    
+  
